@@ -10,6 +10,7 @@ Shader "chenjd/AnimMapShader"
 		_MainTex ("Texture", 2D) = "white" {}
 		_AnimMap ("AnimMap", 2D) ="white" {}
 		_AnimLen("Anim Length", Float) = 0
+		_TimeStart("Time Begin", Float) = 0
 	}
 		SubShader
 		{
@@ -31,6 +32,7 @@ Shader "chenjd/AnimMapShader"
 			struct appdata
 			{
 				float2 uv : TEXCOORD0;
+
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -48,13 +50,19 @@ Shader "chenjd/AnimMapShader"
 			float4 _AnimMap_TexelSize;//x == 1/width
 
 			float _AnimLen;
+			//float _TimeStart;
+
+			UNITY_INSTANCING_BUFFER_START(name)
+				UNITY_DEFINE_INSTANCED_PROP(float, _TimeStart)
+			UNITY_INSTANCING_BUFFER_END(name)
+				
 
 			
 			v2f vert (appdata v, uint vid : SV_VertexID)
 			{
 				UNITY_SETUP_INSTANCE_ID(v);
 
-				float f = _Time.y / _AnimLen;
+				float f = (_Time.y - UNITY_ACCESS_INSTANCED_PROP(name, _TimeStart)) / _AnimLen;
 
 				fmod(f, 1.0);
 

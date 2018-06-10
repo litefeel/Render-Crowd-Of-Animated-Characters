@@ -9,7 +9,7 @@ public class SpawnManager : MonoBehaviour {
 
     #region 字段
 
-    public GameObject spawnPrefab;
+    public AnimPlayer spawnPrefab;
     public int gridWidth;
     public int gridHeight;
 
@@ -25,7 +25,8 @@ public class SpawnManager : MonoBehaviour {
         {
             for(int j = 0; j < gridHeight; j++)
             {
-                Instantiate<GameObject>(spawnPrefab, new Vector3(i * 2, 0, j * 2), Quaternion.identity);
+                var player = Instantiate<AnimPlayer>(spawnPrefab, new Vector3(i * 2, 0, j * 2), Quaternion.identity);
+                player.Play(Random.Range(0, 8), Random.Range(0, 20f));
             }
         }
     }
