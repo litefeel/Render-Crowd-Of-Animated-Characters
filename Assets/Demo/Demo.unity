@@ -197,8 +197,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 496317774}
-  m_LocalRotation: {x: -0.00054717064, y: 0.8896077, z: -0.4567238, w: -0.0010665673}
-  m_LocalPosition: {x: 49.08239, y: 63.77933, z: 111.081436}
+  m_LocalRotation: {x: 0.01248668, y: 0.9602599, z: -0.275409, w: 0.04353046}
+  m_LocalPosition: {x: 17.790257, y: 21.839775, z: 58.386448}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -217,8 +217,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPrefab: {fileID: 114689769251673230, guid: 58fbb8db48373d24180f5dd4d845479a,
     type: 2}
-  gridWidth: 50
-  gridHeight: 50
+  gridWidth: 20
+  gridHeight: 20
 --- !u!114 &496317781
 MonoBehaviour:
   m_ObjectHideFlags: 0

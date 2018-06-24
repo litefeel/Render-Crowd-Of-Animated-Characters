@@ -28,5 +28,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AnimLen: 1.3333334
+    - _CurTime: 0
+    - _Frame: 0
     - _TimeStart: 12.48
     m_Colors: []
