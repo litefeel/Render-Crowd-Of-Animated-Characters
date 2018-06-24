@@ -7,14 +7,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System;
 
 public class AnimMapBakerWindow : EditorWindow {
 
     private enum SaveStrategy
     {
         AnimMap,//only anim map
-        Mat,//with shader
-        Prefab//prefab with mat
+        Mat, //with shader
+        Prefab, //prefab with mat
+        Mesh,
     }
 
     #region 字段
@@ -92,6 +94,9 @@ public class AnimMapBakerWindow : EditorWindow {
             case SaveStrategy.Prefab:
                 SaveAsPrefab(ref data);
                 break;
+            case SaveStrategy.Mesh:
+                SaveAsMesh(ref data);
+                break;
         }
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -149,6 +154,27 @@ public class AnimMapBakerWindow : EditorWindow {
 
         string folderPath = CreateFolder();
         PrefabUtility.CreatePrefab(Path.Combine(folderPath, data.name + ".prefab").Replace("\\", "/"), go);
+    }
+
+    private Mesh SaveAsMesh(ref BakedData data)
+    {
+        if (targetGo == null || !targetGo.GetComponentInChildren<SkinnedMeshRenderer>())
+        {
+            EditorUtility.DisplayDialog("err", "SkinnedMeshRender is null!!", "OK");
+            return null;
+        }
+
+        SkinnedMeshRenderer smr = targetGo.GetComponentInChildren<SkinnedMeshRenderer>();
+        var mesh = new Mesh();
+        smr.BakeMesh(mesh);
+        var uv2 = new Vector2[mesh.vertexCount];
+        for (var i = mesh.vertexCount - 1; i >= 0; i--)
+            uv2[i] = new Vector2(i, i);
+        mesh.uv2 = uv2;
+        string folderPath = CreateFolder();
+        AssetDatabase.CreateAsset(mesh, Path.Combine(folderPath, data.name + ".mesh"));
+
+        return mesh;
     }
 
     private string CreateFolder()

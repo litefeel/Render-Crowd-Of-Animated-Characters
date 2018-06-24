@@ -3,14 +3,14 @@ Created by jiadong chen
 http://www.chenjd.me
 */
 
-Shader "chenjd/AnimMapShader"
+Shader "chenjd/AnimMapShader1"
 {
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 		_AnimMap ("AnimMap", 2D) ="white" {}
 		_AnimLen("Anim Length", Float) = 0
-		_CurTime("CurTime", Float) = 0
+		_TimeStart("Time Begin", Float) = 0
 	}
 		SubShader
 		{
@@ -53,16 +53,16 @@ Shader "chenjd/AnimMapShader"
 			//float _TimeStart;
 
 			UNITY_INSTANCING_BUFFER_START(name)
-				UNITY_DEFINE_INSTANCED_PROP(float, _CurTime)
+				UNITY_DEFINE_INSTANCED_PROP(float, _TimeStart)
 			UNITY_INSTANCING_BUFFER_END(name)
 				
 
 			
-			v2f vert (appdata v)
+			v2f vert (appdata v, uint vid : SV_VertexID)
 			{
 				UNITY_SETUP_INSTANCE_ID(v);
 
-				float f = UNITY_ACCESS_INSTANCED_PROP(name, _CurTime) / _AnimLen;
+				float f = (_Time.y - UNITY_ACCESS_INSTANCED_PROP(name, _TimeStart)) / _AnimLen;
 
 				fmod(f, 1.0);
 

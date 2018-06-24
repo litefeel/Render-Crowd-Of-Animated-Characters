@@ -11,11 +11,14 @@ public class AnimPlayer : MonoBehaviour {
     private new MeshRenderer renderer;
     private MaterialPropertyBlock block;
     private int curAnimationIdx;
+    private float curTime = 0;
 
     private void Awake()
     {
         renderer = GetComponent<MeshRenderer>();
         block = new MaterialPropertyBlock();
+
+        AnimPlayerManager.Instance.doUpdate += DoUpdate;
 
         //Play(curAnimationIdx, Random.Range(0, 2f));
     }
@@ -30,7 +33,15 @@ public class AnimPlayer : MonoBehaviour {
         if (nameId >= materials.Length || nameId < 0) return;
         curAnimationIdx = nameId;
         renderer.sharedMaterial = materials[nameId];
-        block.SetFloat("_TimeStart", Time.timeSinceLevelLoad + delay);
+        curTime = delay;
+        block.SetFloat("_CurTime", curTime);
+        renderer.SetPropertyBlock(block);
+    }
+
+    public void DoUpdate(float deltaTime)
+    {
+        curTime += deltaTime;
+        block.SetFloat("_CurTime", curTime);
         renderer.SetPropertyBlock(block);
     }
 
